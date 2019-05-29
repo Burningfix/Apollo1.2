@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 
                     startActivity(t);
                 } catch (Throwable e) {
-                    e.printStackTrace();
+                    Log.e("sanbo.MainActivity", Log.getStackTraceString(e));
                 }
             }
         });
@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
         try {
+            Log.i("sanbo", "inside attachBaseContext");
             Utils.extractAssets(newBase, "testactivity.apk");
 
             File dexFile = getFileStreamPath("testactivity.apk");
@@ -59,7 +60,7 @@ public class MainActivity extends Activity {
             AMSHookHelper.hookActivityThread();
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            Log.e("sanbo.MainActivity", Log.getStackTraceString(e));
         }
     }
 }

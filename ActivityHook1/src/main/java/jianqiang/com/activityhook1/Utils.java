@@ -2,6 +2,7 @@ package jianqiang.com.activityhook1;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import java.io.Closeable;
 import java.io.File;
@@ -36,7 +37,8 @@ public class Utils {
             }
             fos.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("sanbo.Utils",Log.getStackTraceString(e));
+
         } finally {
             closeSilently(is);
             closeSilently(fos);
@@ -66,7 +68,7 @@ public class Utils {
         try {
             closeable.close();
         } catch (Throwable e) {
-            // ignore
+            Log.e("sanbo.Utils",Log.getStackTraceString(e));
         }
     }
 

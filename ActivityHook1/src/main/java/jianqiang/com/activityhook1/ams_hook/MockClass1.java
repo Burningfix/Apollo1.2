@@ -11,7 +11,7 @@ import jianqiang.com.activityhook1.StubActivity;
 
 class MockClass1 implements InvocationHandler {
 
-    private static final String TAG = "MockClass1";
+    private static final String TAG = "sanbo.MockClass1";
 
     Object mBase;
 
@@ -22,7 +22,7 @@ class MockClass1 implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        Log.e("bao", method.getName());
+        Log.v(TAG, "invoke method: "+method.getName());
 
         if ("startActivity".equals(method.getName())) {
             // 只拦截这个方法

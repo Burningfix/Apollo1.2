@@ -12,10 +12,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("PluginActivity");
         TextView tv = new TextView(this);
-        tv.setText("baobao222");
+        tv.setText("PluginActivity");
         setContentView(tv);
 
-        Log.d("baobao2", String.valueOf(StringConstant.string1));
+        Log.d("sanbo.plugin", String.valueOf(StringConstant.string1));
     }
 }
