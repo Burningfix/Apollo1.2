@@ -11,7 +11,7 @@ import jianqiang.com.activityhook1.StubActivity;
 
 class MockClass1 implements InvocationHandler {
 
-    private static final String TAG = "sanbo.MockClass1";
+    private static final String TAG = "sanbo.mock1";
 
     Object mBase;
 
@@ -22,7 +22,7 @@ class MockClass1 implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        Log.v(TAG, "invoke method: "+method.getName());
+        Log.v(TAG, "invoke method: " + method.getName());
 
         if ("startActivity".equals(method.getName())) {
             // 只拦截这个方法
@@ -39,6 +39,7 @@ class MockClass1 implements InvocationHandler {
                 }
             }
             raw = (Intent) args[index];
+            Log.i(TAG, "invoke 目标intent:" + raw.toString());
 
             Intent newIntent = new Intent();
 
@@ -49,9 +50,9 @@ class MockClass1 implements InvocationHandler {
             ComponentName componentName = new ComponentName(stubPackage, StubActivity.class.getName());
             newIntent.setComponent(componentName);
 
+            Log.i(TAG, "invoke 占坑Activity: " + newIntent.toString());
             // 把我们原始要启动的TargetActivity先存起来
             newIntent.putExtra(AMSHookHelper.EXTRA_TARGET_INTENT, raw);
-
             // 替换掉Intent, 达到欺骗AMS的目的
             args[index] = newIntent;
 

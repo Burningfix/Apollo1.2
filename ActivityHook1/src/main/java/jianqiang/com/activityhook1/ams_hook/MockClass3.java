@@ -1,10 +1,7 @@
 package jianqiang.com.activityhook1.ams_hook;
 
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
-import android.os.Handler;
-import android.os.Message;
+import android.util.Log;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -15,6 +12,7 @@ import java.lang.reflect.Method;
  */
 public class MockClass3 implements InvocationHandler {
 
+    private String TAG = "sanbo.mock3";
     private Object mBase;
 
     public MockClass3(Object base) {
@@ -23,6 +21,7 @@ public class MockClass3 implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        Log.v(TAG, "invoke methodname: " + method.getName());
         if (method.getName().equals("getPackageInfo")) {
             return new PackageInfo();
         }

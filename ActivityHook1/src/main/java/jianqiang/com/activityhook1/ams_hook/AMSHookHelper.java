@@ -40,7 +40,7 @@ public class AMSHookHelper {
         Class<?> classB2Interface = Class.forName("android.app.IActivityManager");
         Object proxy = Proxy.newProxyInstance(
                 Thread.currentThread().getContextClassLoader(),
-                new Class<?>[] { classB2Interface },
+                new Class<?>[]{classB2Interface},
                 new MockClass1(mInstance));
 
         //把gDefault的mInstance字段，修改为proxy

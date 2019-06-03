@@ -17,6 +17,7 @@ import jianqiang.com.activityhook1.RefInvoke;
  */
 /* package */ class MockClass2 implements Handler.Callback {
 
+    private String TAG = "sanbo.mock2";
     Handler mBase;
 
     public MockClass2(Handler base) {
@@ -25,7 +26,7 @@ import jianqiang.com.activityhook1.RefInvoke;
 
     @Override
     public boolean handleMessage(Message msg) {
-        Log.i("sanbo.MockClass2", "handleMessage what: " + msg.what);
+        Log.i(TAG, "handleMessage what: " + msg.what);
 
         // support android 8
         switch (msg.what) {
@@ -50,7 +51,7 @@ import jianqiang.com.activityhook1.RefInvoke;
         Object obj = msg.obj;
 
         //android.app.servertransaction.ClientTransaction
-        Log.i("sanbo.mock2", "handleActivity...obj: " + obj.toString());
+        Log.i(TAG, "handleActivity...obj: " + obj.toString());
         List<Object> mActivityCallbacks = (List<Object>) RefInvoke.getFieldObject(obj, "mActivityCallbacks");
         if (mActivityCallbacks.size() > 0) {
             // 新版本 更新多个Item
@@ -66,13 +67,14 @@ import jianqiang.com.activityhook1.RefInvoke;
                 Intent target = intent.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
                 intent.setComponent(target.getComponent());
 
+                Log.i(TAG, "handleActivity...target: " + target.toString());
 
                 /**
                  * 其实不要也能生效。
                  */
                 //修改packageName，这样缓存才能命中
                 ActivityInfo activityInfo = (ActivityInfo) RefInvoke.getFieldObject(object, "mInfo");
-                Log.i("sanbo.activityInfo", "activityInfo:" + activityInfo);
+                Log.i(TAG, "activityInfo:" + activityInfo);
                 realLaunch(target, activityInfo);
             }
         }
@@ -83,16 +85,18 @@ import jianqiang.com.activityhook1.RefInvoke;
         // 这里简单起见,直接取出TargetActivity;
 
         Object obj = msg.obj;
+        Log.i(TAG, "handleLaunchActivity obj:" + obj);
 
         // 把替身恢复成真身
         Intent raw = (Intent) RefInvoke.getFieldObject(obj.getClass(), obj, "intent");
 
+        Log.i(TAG, "handleLaunchActivity rawIntent:" + raw.toString());
         Intent target = raw.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
         raw.setComponent(target.getComponent());
 
 
         //android.app.ActivityThread$ActivityClientRecord
-        Log.i("sanbo.Mock2", "obj: " + obj.getClass().toString());
+        Log.i(TAG, "obj: " + obj.getClass().toString());
         //修改packageName，这样缓存才能命中
         ActivityInfo activityInfo = (ActivityInfo) RefInvoke.getFieldObject(obj.getClass(), obj, "activityInfo");
         realLaunch(target, activityInfo);
@@ -102,15 +106,15 @@ import jianqiang.com.activityhook1.RefInvoke;
 
 
         try {
-            Log.i("sanbo.realLaunch", "=============================================");
-            Log.i("sanbo.realLaunch", "target: " + target.toString());
-            Log.i("sanbo.realLaunch", "activityInfo: " + activityInfo.toString());
+            Log.i(TAG, "===============realLaunch==============================");
+            Log.i(TAG, "realLaunch target: " + target.toString());
+            Log.i(TAG, "realLaunch activityInfo: " + activityInfo.toString());
 
             activityInfo.applicationInfo.packageName = target.getPackage() == null ?
                     target.getComponent().getPackageName() : target.getPackage();
             hookPackageManager();
         } catch (Throwable e) {
-            Log.i("sanbo.MockClass2", Log.getStackTraceString(e));
+            Log.i(TAG, Log.getStackTraceString(e));
 
         }
     }
