@@ -2,7 +2,6 @@ package jianqiang.com.activityhook1.ams_hook;
 
 import android.os.Handler;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 
 import jianqiang.com.activityhook1.RefInvoke;
@@ -19,12 +18,8 @@ public class AMSHookHelper {
      * Hook AMS
      * 主要完成的操作是  "把真正要启动的Activity临时替换为在AndroidManifest.xml中声明的替身Activity",进而骗过AMS
      */
-    public static void hookAMN() throws ClassNotFoundException,
-            NoSuchMethodException, InvocationTargetException,
-            IllegalAccessException, NoSuchFieldException {
+    public static void hookAMN() throws Exception {
 
-//        //获取AMN的gDefault单例gDefault，gDefault是final静态的
-//        Object gDefault = RefInvoke.getStaticFieldObject("android.app.ActivityManagerNative", "gDefault");
         Object gDefault = null;
         if (android.os.Build.VERSION.SDK_INT <= 25) {
             //获取AMN的gDefault单例gDefault，gDefault是静态的

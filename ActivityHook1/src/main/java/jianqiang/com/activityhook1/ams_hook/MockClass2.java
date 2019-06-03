@@ -34,10 +34,10 @@ import jianqiang.com.activityhook1.RefInvoke;
             // 本来使用反射的方式获取最好, 这里为了简便直接使用硬编码
             // ActivityThread里面 "LAUNCH_ACTIVITY" 这个字段的值是100
             // 本来使用反射的方式获取最好, 这里为了简便直接使用硬编码
-            case 100:   //for API 28以下
+            case 100://for API 28以下
                 handleLaunchActivity(msg);
                 break;
-            case 159:   //for API 28
+            case 159://for API 28
                 handleActivity(msg);
                 break;
         }
@@ -88,7 +88,7 @@ import jianqiang.com.activityhook1.RefInvoke;
         Log.i(TAG, "handleLaunchActivity obj:" + obj);
 
         // 把替身恢复成真身
-        Intent raw = (Intent) RefInvoke.getFieldObject(obj.getClass(), obj, "intent");
+        Intent raw = (Intent) RefInvoke.getFieldObject(obj, "intent");
 
         Log.i(TAG, "handleLaunchActivity rawIntent:" + raw.toString());
         Intent target = raw.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
@@ -98,7 +98,7 @@ import jianqiang.com.activityhook1.RefInvoke;
         //android.app.ActivityThread$ActivityClientRecord
         Log.i(TAG, "obj: " + obj.getClass().toString());
         //修改packageName，这样缓存才能命中
-        ActivityInfo activityInfo = (ActivityInfo) RefInvoke.getFieldObject(obj.getClass(), obj, "activityInfo");
+        ActivityInfo activityInfo = (ActivityInfo) RefInvoke.getFieldObject(obj, "activityInfo");
         realLaunch(target, activityInfo);
     }
 
@@ -126,7 +126,7 @@ import jianqiang.com.activityhook1.RefInvoke;
         Object currentActivityThread = RefInvoke.invokeStaticMethod("android.app.ActivityThread", "currentActivityThread");
 
         // 获取ActivityThread里面原始的 sPackageManager
-        Object sPackageManager = RefInvoke.getFieldObject("android.app.ActivityThread", currentActivityThread, "sPackageManager");
+        Object sPackageManager = RefInvoke.getFieldObject(currentActivityThread, "sPackageManager");
 
         // 准备好代理对象, 用来替换原始的对象
         Class<?> iPackageManagerInterface = Class.forName("android.content.pm.IPackageManager");
@@ -135,6 +135,6 @@ import jianqiang.com.activityhook1.RefInvoke;
                 new MockClass3(sPackageManager));
 
         // 1. 替换掉ActivityThread里面的 sPackageManager 字段
-        RefInvoke.setFieldObject("android.app.ActivityThread", currentActivityThread, "sPackageManager", proxy);
+        RefInvoke.setFieldObject(currentActivityThread, "sPackageManager", proxy);
     }
 }
