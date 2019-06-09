@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.lang.reflect.Proxy;
@@ -39,33 +40,34 @@ import jianqiang.com.activityhook1.RefInvoke;
             case 159://for API 28
                 handleActivity(msg);
                 break;
-            case 112:
-                handleNewIntent(msg);
-                break;
+//            case 112: //zenus方式
+//                handleNewIntent(msg);
+//                break;
         }
 
         mBase.handleMessage(msg);
         return true;
     }
 
-    private void handleNewIntent(Message msg) {
-        Object obj = msg.obj;
-        ArrayList intents = (ArrayList) RefInvoke.getFieldObject(obj, "intents");
-
-        for (Object object : intents) {
-            Intent raw = (Intent) object;
-            Intent target = raw.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
-            if (target != null) {
-                raw.setComponent(target.getComponent());
-
-                if (target.getExtras() != null) {
-                    raw.putExtras(target.getExtras());
-                }
-
-                break;
-            }
-        }
-    }
+//    private void handleNewIntent(Message msg) {
+//        Object obj = msg.obj;
+//        ArrayList intents = (ArrayList) RefInvoke.getFieldObject(obj, "intents");
+//        Log.i(TAG,"handleNewIntent: "+ intents);
+//
+//        for (Object object : intents) {
+//            Intent raw = (Intent) object;
+//            Intent target = raw.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
+//            if (target != null) {
+//                raw.setComponent(target.getComponent());
+//
+//                if (target.getExtras() != null) {
+//                    raw.putExtras(target.getExtras());
+//                }
+//
+//                break;
+//            }
+//        }
+//    }
 
     private void handleActivity(Message msg) {
         // 这里简单起见,直接取出TargetActivity;
