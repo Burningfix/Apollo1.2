@@ -3,12 +3,12 @@
     package="jianqiang.com.activityhook1">
 
     <application
-        android:name=".UPFApplication"
+        android:name="jianqiang.com.activityhook1.UPFApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         >
-        <activity android:name=".MainActivity">
+        <activity android:name="jianqiang.com.activityhook1.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
