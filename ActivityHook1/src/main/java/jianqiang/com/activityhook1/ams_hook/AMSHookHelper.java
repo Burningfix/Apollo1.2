@@ -21,6 +21,9 @@ public class AMSHookHelper {
     public static void hookAMN() throws Exception {
 
         Object gDefault = null;
+        //Android O-8中ActivityManagerNative被废弃，ActivityManagerProxy被移除了
+        // AMS采用了AIDL的方式实现。需要hook ActivityManager中的IActivityManagerSingleton。
+
         if (android.os.Build.VERSION.SDK_INT <= 25) {
             //获取AMN的gDefault单例gDefault，gDefault是静态的
             gDefault = RefInvoke.getStaticFieldObject("android.app.ActivityManagerNative", "gDefault");
@@ -30,6 +33,7 @@ public class AMSHookHelper {
         }
         // gDefault是一个 android.util.Singleton<T>对象; 我们取出这个单例里面的mInstance字段
         Object mInstance = RefInvoke.getFieldObject("android.util.Singleton", gDefault, "mInstance");
+
 
         // 创建一个这个对象的代理对象MockClass1, 然后替换这个字段, 让我们的代理对象帮忙干活
         Class<?> classB2Interface = Class.forName("android.app.IActivityManager");
