@@ -7,6 +7,7 @@ import android.os.Message;
 import android.util.Log;
 
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 
 import jianqiang.com.activityhook1.RefInvoke;
@@ -32,18 +33,38 @@ import jianqiang.com.activityhook1.RefInvoke;
         switch (msg.what) {
             // ActivityThread里面 "LAUNCH_ACTIVITY" 这个字段的值是100
             // 本来使用反射的方式获取最好, 这里为了简便直接使用硬编码
-            // ActivityThread里面 "LAUNCH_ACTIVITY" 这个字段的值是100
-            // 本来使用反射的方式获取最好, 这里为了简便直接使用硬编码
             case 100://for API 28以下
                 handleLaunchActivity(msg);
                 break;
             case 159://for API 28
                 handleActivity(msg);
                 break;
+            case 112:
+                handleNewIntent(msg);
+                break;
         }
 
         mBase.handleMessage(msg);
         return true;
+    }
+
+    private void handleNewIntent(Message msg) {
+        Object obj = msg.obj;
+        ArrayList intents = (ArrayList) RefInvoke.getFieldObject(obj, "intents");
+
+        for (Object object : intents) {
+            Intent raw = (Intent) object;
+            Intent target = raw.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
+            if (target != null) {
+                raw.setComponent(target.getComponent());
+
+                if (target.getExtras() != null) {
+                    raw.putExtras(target.getExtras());
+                }
+
+                break;
+            }
+        }
     }
 
     private void handleActivity(Message msg) {
