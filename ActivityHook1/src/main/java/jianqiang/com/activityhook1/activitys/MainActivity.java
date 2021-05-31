@@ -9,7 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.File;
+
+import jianqiang.com.activityhook1.Utils;
 import jianqiang.com.activityhook1.ams_hook.AMSHookHelper;
+import jianqiang.com.activityhook1.classloder_hook.BaseDexClassLoaderHookHelper;
 
 public class MainActivity extends Activity {
 
@@ -33,7 +37,7 @@ public class MainActivity extends Activity {
                                     "com.example.jianqiang.testactivity.MainActivity"));
                     startActivity(t);
                 } catch (Throwable e) {
-                    logi( Log.getStackTraceString(e));
+                    logi(Log.getStackTraceString(e));
                 }
             }
         });
@@ -54,7 +58,6 @@ public class MainActivity extends Activity {
             AMSHookHelper.hookActivityThread();
 
         } catch (Throwable e) {
-
             logi(Log.getStackTraceString(e));
         }
     }
