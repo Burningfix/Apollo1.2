@@ -10,21 +10,30 @@ import java.lang.reflect.Method;
  * @author weishu
  * @date 16/1/7
  */
-public class MockClass3 implements InvocationHandler {
+public class MocksPManager implements InvocationHandler {
 
-    private String TAG = "sanbo.mock3";
     private Object mBase;
 
-    public MockClass3(Object base) {
+    public MocksPManager(Object base) {
         mBase = base;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Log.v(TAG, "invoke methodname: " + method.getName());
+        logd("invoke methodname: " + method.getName());
         if (method.getName().equals("getPackageInfo")) {
             return new PackageInfo();
         }
         return method.invoke(mBase, args);
+    }
+
+    private static final String TAG = "sanbo.MockPManager";
+
+    private void logd(String info) {
+        Log.println(Log.DEBUG, TAG, info);
+    }
+
+    private void logi(String info) {
+        Log.println(Log.INFO, TAG, info);
     }
 }

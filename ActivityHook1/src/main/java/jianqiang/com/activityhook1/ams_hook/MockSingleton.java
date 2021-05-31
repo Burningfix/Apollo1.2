@@ -7,22 +7,21 @@ import android.util.Log;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import jianqiang.com.activityhook1.StubActivity;
+import jianqiang.com.activityhook1.activitys.StubActivity;
 
-class MockClass1 implements InvocationHandler {
+class MockSingleton implements InvocationHandler {
 
-    private static final String TAG = "sanbo.mock1";
 
     Object mBase;
 
-    public MockClass1(Object base) {
+    public MockSingleton(Object base) {
         mBase = base;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        Log.v(TAG, "invoke method: " + method.getName());
+        logd("invoke method: " + method.toString());
 
         if ("startActivity".equals(method.getName())) {
             // 只拦截这个方法
@@ -39,7 +38,7 @@ class MockClass1 implements InvocationHandler {
                 }
             }
             raw = (Intent) args[index];
-            Log.i(TAG, "invoke 目标intent:" + raw.toString());
+            logd("invoke 目标intent:" + raw.toString());
 
             Intent newIntent = new Intent();
 
@@ -50,17 +49,27 @@ class MockClass1 implements InvocationHandler {
             ComponentName componentName = new ComponentName(stubPackage, StubActivity.class.getName());
             newIntent.setComponent(componentName);
 
-            Log.i(TAG, "invoke 占坑Activity: " + newIntent.toString());
+            logd("invoke 占坑Activity: " + newIntent.toString());
             // 把我们原始要启动的TargetActivity先存起来
             newIntent.putExtra(AMSHookHelper.EXTRA_TARGET_INTENT, raw);
             // 替换掉Intent, 达到欺骗AMS的目的
             args[index] = newIntent;
 
-            Log.d(TAG, "hook success");
+            logi("hook success");
             return method.invoke(mBase, args);
 
         }
 
         return method.invoke(mBase, args);
+    }
+
+    private static final String TAG = "sanbo.MockSingleton";
+
+    private void logd(String info) {
+        Log.println(Log.DEBUG, TAG, info);
+    }
+
+    private void logi(String info) {
+        Log.println(Log.INFO, TAG, info);
     }
 }

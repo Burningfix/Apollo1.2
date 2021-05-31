@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".StubActivity"/>
+        <activity android:name=".activitys.StubActivity"/>
 
     </application>
 

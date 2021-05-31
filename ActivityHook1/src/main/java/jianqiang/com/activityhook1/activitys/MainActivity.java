@@ -1,4 +1,4 @@
-package jianqiang.com.activityhook1;
+package jianqiang.com.activityhook1.activitys;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -9,14 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.File;
-
 import jianqiang.com.activityhook1.ams_hook.AMSHookHelper;
-import jianqiang.com.activityhook1.classloder_hook.BaseDexClassLoaderHookHelper;
 
 public class MainActivity extends Activity {
-
-    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +22,7 @@ public class MainActivity extends Activity {
 
         setContentView(t);
 
-        Log.d(TAG, "context classloader: " + getApplicationContext().getClassLoader());
+        logd("context classloader: " + getApplicationContext().getClassLoader());
         t.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,10 +31,9 @@ public class MainActivity extends Activity {
                     t.setComponent(
                             new ComponentName("com.example.jianqiang.testactivity",
                                     "com.example.jianqiang.testactivity.MainActivity"));
-
                     startActivity(t);
                 } catch (Throwable e) {
-                    Log.e("sanbo.MainActivity", Log.getStackTraceString(e));
+                    logi( Log.getStackTraceString(e));
                 }
             }
         });
@@ -49,7 +43,7 @@ public class MainActivity extends Activity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
         try {
-            Log.i("sanbo", "inside attachBaseContext");
+            logd("inside attachBaseContext");
             Utils.extractAssets(newBase, "testactivity.apk");
 
             File dexFile = getFileStreamPath("testactivity.apk");
@@ -60,7 +54,19 @@ public class MainActivity extends Activity {
             AMSHookHelper.hookActivityThread();
 
         } catch (Throwable e) {
-            Log.e("sanbo.MainActivity", Log.getStackTraceString(e));
+
+            logi(Log.getStackTraceString(e));
         }
     }
+
+    private static final String TAG = "sanbo.MainActivity";
+
+    private void logd(String info) {
+        Log.println(Log.DEBUG, TAG, info);
+    }
+
+    private void logi(String info) {
+        Log.println(Log.INFO, TAG, info);
+    }
+
 }

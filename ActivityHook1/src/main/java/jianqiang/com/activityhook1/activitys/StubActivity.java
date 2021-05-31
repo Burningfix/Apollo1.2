@@ -1,9 +1,11 @@
-package jianqiang.com.activityhook1;
+package jianqiang.com.activityhook1.activitys;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+
+import jianqiang.com.activityhook1.StringConstant;
 
 /**
  * @author weishu
@@ -15,9 +17,9 @@ public class StubActivity extends Activity {
         super.onCreate(savedInstanceState);
         setTitle("StubActivity");
         TextView tv = new TextView(this);
-        tv.setText("StubActivity");
+        tv.setText("我是StubActivity，声明了那种");
         setContentView(tv);
 
-        Log.d("sanbo.StubActivity", String.valueOf(StringConstant.string1));
     }
+
 }
